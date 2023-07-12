@@ -1,19 +1,13 @@
 import React from 'react';
-import { Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import { DB_URL } from '../Helper';
-import axios from 'axios';
+import { Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, Input, Text, useDisclosure } from '@chakra-ui/react';
 import { useAddScore } from "../hooks/useAddScore";
+import ModalResult from '../Components/ModalResult';
 
 function PlayPage() {
-    const { addScore } = useAddScore();
-    
+    const { addScore, setScore, score } = useAddScore();
     const [count, setCount] = React.useState(1);
-    const [score, setScore] = React.useState(0);
     const [question, setQuestion] = React.useState([]);
     const [answer, setAnswer] = React.useState("");
-    const modalScore = useDisclosure();
-    const navigate = useNavigate();
 
     const newQuestion = () => {
         const question1 = Math.floor(Math.random() * 10);
@@ -36,34 +30,9 @@ function PlayPage() {
         setAnswer("");
     };
 
-
-
-    React.useEffect(() => {
-        if (count === 11) {
-            modalScore.onOpen();
-            addScore()
-        }
-    }, [count])
-
-    const btnExit = () => {
-        setScore();
-        setCount();
-        setAnswer("");
-        modalScore.onClose();
-        navigate("/")
-    }
-
-    const btnRetry = () => {
-        setScore(0);
-        setCount(1);
-        setAnswer("");
-        modalScore.onClose();
-    }
-
-
     return (
         <Flex justifyContent={"center"} pos="relative" top="80">
-            <Card textAlign={"center"} w="540px">
+            <Card textAlign={"center"} w="540px" shadow={"2xl"}>
                 <CardHeader>
                     <Heading size='lg'>Question {count}/10 </Heading>
                 </CardHeader>
@@ -89,23 +58,14 @@ function PlayPage() {
                     Score: {score}
                 </Text>
             </Card>
-
-            <Modal isOpen={modalScore.isOpen} onClose={modalScore.onClose} isCentered>
-                <ModalOverlay />
-                <ModalContent alignItems={"center"}>
-                    <ModalHeader fontSize={"2xl"}>Final Score: {score}</ModalHeader>
-                    <ModalBody fontSize={"3xl"} fontWeight={"bold"}>
-
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button colorScheme='blue' mr={3} onClick={btnRetry}>
-                            Retry
-                        </Button>
-                        <Button colorScheme={"red"} onClick={btnExit}>Exit</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+            <ModalResult
+                setCount={setCount}
+                count={count}
+                setAnswer={setAnswer}
+                setScore={setScore}
+                score={score}
+                addScore={addScore}
+            />
         </Flex>
     )
 }

@@ -1,15 +1,17 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { DB_URL } from "../Helper";
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from "../Lib/init-firebase";
 
 export const useFetchScore = () => {
     const [topScore, setTopScore] = useState([]);
     const getTopScore = async () => {
         try {
-            let res = await axios.get(`${DB_URL}?_sort=score&_order=desc`)
-
-            console.log("getTopScore", res.data);
-            setTopScore(res.data)
+            let score = collection(db, "TopScore");
+            const res = await getDocs(score);
+            const topScore = res.docs.map((val) =>
+                val.data().score
+            ).sort((a, b) => b - a)
+            setTopScore(topScore)
         } catch (error) {
             console.log(error);
         }
@@ -17,7 +19,6 @@ export const useFetchScore = () => {
     useEffect(() => {
         getTopScore()
     }, [])
-
 
     return { topScore, getTopScore }
 }

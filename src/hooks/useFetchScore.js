@@ -21,5 +21,3 @@ export const useFetchScore = () => {
 
     return { topScore, getTopScore }
 }
-
-

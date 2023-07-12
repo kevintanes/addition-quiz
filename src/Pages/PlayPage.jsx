@@ -30,6 +30,12 @@ function PlayPage() {
         setAnswer("");
     };
 
+    const handleKeypress = e => {  
+        if (e.keyCode === 13) {
+            btnSubmit();
+        }
+    };
+
     return (
         <Flex justifyContent={"center"} pos="relative" top="80">
             <Card textAlign={"center"} w="540px" shadow={"2xl"}>
@@ -48,6 +54,8 @@ function PlayPage() {
                             fontSize="2xl"
                             fontWeight={"bold"}
                             ml="8px"
+                            onKeyDown={handleKeypress}
+                            type="number"
                         />
                     </Flex>
                 </CardBody>

@@ -23,7 +23,12 @@ function LandingPage() {
                     </OrderedList>
                 </CardBody>
                 <CardFooter>
-                    <Button onClick={() => navigate("/play")} colorScheme='blue'>Play</Button>
+                    <Button
+                        onClick={() => navigate("/play")}
+                        colorScheme='blue'
+                    >
+                        Play
+                    </Button>
                 </CardFooter>
             </Card>
         </Flex>
